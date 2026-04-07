@@ -29,18 +29,28 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Download the actual browsers (Chrome, Firefox)
+    # Install the browsers (Chrome/Firefox)
     - name: Install Playwright Browsers
       run: python -m playwright install --with-deps
 
-    # Run the tests and record video if they fail
-    - name: Run Pytest
-      run: pytest tests/ --tracing=retain-on-failure
+    # Run tests and create the HTML report
+    - name: Run tests
+      run: pytest tests/ --tracing=retain-on-failure --html=report.html --self-contained-html
+
+    # Save the HTML report to GitHub
+    - name: Upload HTML Report
+      if: ${{ !cancelled() }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-report
+        path: report.html
+        if-no-files-found: ignore
 
     # Save the test results (video/photos) to GitHub if there is a failure
     - name: Upload Test Results
       uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+      if: failure()
       with:
         name: playwright-traces
         path: test-results/
+        if-no-files-found: ignore
