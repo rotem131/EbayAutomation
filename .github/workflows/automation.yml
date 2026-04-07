@@ -35,7 +35,7 @@ jobs:
 
     # Run the tests and record video if they fail
     - name: Run Pytest
-      run: pytest --tracing=retain-on-failure
+      run: pytest tests/ --tracing=retain-on-failure
 
     # Save the test results (video/photos) to GitHub if there is a failure
     - name: Upload Test Results
