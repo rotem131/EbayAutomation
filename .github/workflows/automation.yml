@@ -34,7 +34,7 @@ jobs:
       run: python -m playwright install --with-deps
 
     # Run tests and create the HTML report
-    - name: Run Pytest and Generate Report
+    - name: Run tests
       run: pytest tests/ --tracing=retain-on-failure --html=report.html --self-contained-html
 
     # Save the HTML report to GitHub
