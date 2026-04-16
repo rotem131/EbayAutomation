@@ -1,4 +1,6 @@
 from playwright.async_api import Page, Locator
+import re
+from pathlib import Path
 
 class BasePage:
     def __init__(self, page: Page):
@@ -7,6 +9,10 @@ class BasePage:
 
     async def navigate_to(self, url: str) -> None:
         await self.page.goto(url)
+
+    async def go_back(self, wait_for_url:str | re.Pattern) -> None:
+        await self.page.go_back()
+        await self.page.wait_for_url(wait_for_url)
 
     async def wait_for_element(self, element: Locator, state: str = "visible", timeout: int | None = None) -> Locator:
         actual_timeout = self.default_timeout if timeout is None else timeout
@@ -23,3 +29,11 @@ class BasePage:
     async def get_inner_text(self, element: Locator) -> str:
         return (await element.inner_text()).strip()
     
+    async def screenshot( self, category: str, file_name: str, full_page: bool = False) -> None:
+        folder_path = Path("screenshots") / category
+        folder_path.mkdir(parents=True, exist_ok=True)
+
+        file_path = folder_path / file_name
+
+        await self.page.screenshot(path=str(file_path), full_page=full_page)
+
