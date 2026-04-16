@@ -22,12 +22,12 @@ class FilterPage(BasePage):
         await self.click_element(self._apply_dialog_btn)
         await self.wait_for_element(self._dialog_container, state="hidden")
 
-    async def choose_category_filter(self, category_name: str) -> None:
+    async def _choose_category_filter(self, category_name: str) -> None:
         category_tab = self._dialog_container.get_by_role("tab", name=re.compile(category_name, re.I))
         await self.click_element(category_tab)
 
     async def add_max_price_filter(self, max_price: float) -> None:
-        await self.choose_category_filter("Price")
+        await self._choose_category_filter("Price")
         await self.fill_field(self._max_price_input, str(max_price))
         await self._max_price_input.press("Enter")
         await self._apply_dialog_filters()
