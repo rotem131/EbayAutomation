@@ -1,24 +1,24 @@
-from playwright.sync_api import Page
-
+from playwright.async_api import Page, Locator
 
 class BasePage:
-    def __init__(self, page: Page) -> None:
+    def __init__(self, page: Page):
         self.page = page
+        self.default_timeout = 10000
 
-    def navigate(self, url: str) -> None:
-        self.page.goto(url)
+    async def navigate_to(self, url: str) -> None:
+        await self.page.goto(url)
 
-    def click_element(self, selector: str) -> None:
-        locator = self.page.locator(selector)
-        locator.wait_for(state="visible")
-        locator.click()
+    async def wait_for_element(self, element: Locator, state: str = "visible", timeout: int | None = None) -> Locator:
+        actual_timeout = self.default_timeout if timeout is None else timeout
+        await element.wait_for(state=state, timeout=actual_timeout)
+    
+    async def click_element(self, element: Locator, timeout: int | None = None) -> None:
+        await self.wait_for_element(element, timeout=timeout)
+        await element.click()
 
-    def click_by_text(self, selector: str, text: str) -> None:
-        locator = self.page.locator(selector).get_by_text(text, exact=False)
-        locator.wait_for(state="visible")
-        locator.click()
+    async def fill_field(self, element: Locator, value: str, timeout: int | None = None) -> None:
+        await self.wait_for_element(element, timeout=timeout)
+        await element.fill(value)
 
-    def fill_field(self, selector: str, text: str) -> None:
-        locator = self.page.locator(selector)
-        locator.wait_for(state="visible")
-        locator.fill(text)
+    async def get_inner_text(self, element: Locator) -> str:
+        return (await element.inner_text()).strip()

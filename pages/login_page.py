@@ -1,26 +1,38 @@
 import logging
-from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
+from playwright.async_api import Page, TimeoutError as PlaywrightTimeoutError
 from pages.base_page import BasePage
 
 logger = logging.getLogger("pages.login_page")
 
 
 class LoginPage(BasePage):
-    SIGN_IN_CONTAINER = ".gh-identity"
-    USER_ID_INPUT = "data-testid=userid"
-    CONTINUE_BTN = "data-testid=signin-continue-btn"
-    PASS_INPUT = "data-testid=pass"
-    SIGNIN_BTN = "data-testid=sgnBt"
+    _IDENTITY_AREA = ".gh-identity"
+    _USER_NAME_INPUT = "userid"
+    _CONTINUE_BTN = "signin-continue-btn"
+    _PASS_INPUT = "pass"
+    _SIGN_IN_BTN = "sgnBt"
 
-    def login(self, base_url, username, password) -> None:
-        self.navigate(base_url)
-        self.click_by_text(self.SIGN_IN_CONTAINER, "Sign in")
+    def __init__(self, page: Page) -> None:
+        super().__init__(page)
+        self._identity_area = self.page.locator(self._IDENTITY_AREA)
+        self._user_name_input = self.page.get_by_test_id(self._USER_NAME_INPUT)
+        self._continue_btn = self.page.get_by_test_id(self._CONTINUE_BTN)
+        self._pass_input = self.page.get_by_test_id(self._PASS_INPUT)
+        self._sign_in_btn = self.page.get_by_test_id(self._SIGN_IN_BTN)
+
+    async def open_sign_in(self) -> None:
+        sign_in_page = self._identity_area.get_by_text("Sign in")
+        await self.click_element(sign_in_page)
+
+    async def login(self, base_url: str, username: str, password: str) -> None:
+        await self.navigate_to(base_url)
+        await self.open_sign_in()
 
         try:
-            self.fill_field(self.USER_ID_INPUT, username)
-            self.click_element(self.CONTINUE_BTN)
-            self.fill_field(self.PASS_INPUT, password)
-            self.click_element(self.SIGNIN_BTN)
+            await self.fill_field(self._user_name_input, username)
+            await self.click_element(self._continue_btn)
+            await self.fill_field(self._pass_input, password)
+            await self.click_element(self._sign_in_btn)
         except PlaywrightTimeoutError:
             logger.warning("Login failed or Captcha appeared, continue as a guest")
-            self.navigate(base_url)
+            await self.navigate_to(base_url)
