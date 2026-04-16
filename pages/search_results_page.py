@@ -21,9 +21,9 @@ class SearchResultsPage(BasePage):
         price_texts = await result.locator(self._ALL_PRICES_RESULT).all_inner_texts()
         return extract_prices(price_texts)
 
-    async def _get_min_price_from_result(self, result: Locator) -> float | None:
+    async def _get_max_price_from_result(self, result: Locator) -> float | None:
         prices = await self._get_prices_from_result(result)
-        return min(prices) if prices else None
+        return max(prices) if prices else None
 
     async def _get_url_from_result(self, result: Locator) -> str | None:
         return await result.locator(self._ALL_URL_RESULT).first.get_attribute("href")
@@ -37,7 +37,7 @@ class SearchResultsPage(BasePage):
                 break
 
             result = self._results.nth(i)
-            price = await self._get_min_price_from_result(result)
+            price = await self._get_max_price_from_result(result)
 
             if price is not None and price <= max_price:
                 url = await self._get_url_from_result(result)
