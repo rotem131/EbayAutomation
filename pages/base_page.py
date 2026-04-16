@@ -22,3 +22,4 @@ class BasePage:
 
     async def get_inner_text(self, element: Locator) -> str:
         return (await element.inner_text()).strip()
+    
