@@ -27,7 +27,6 @@ class ProductPage(BasePage):
 
     async def add_items_to_cart(self, urls: list[str]) -> None:
         for index, url in enumerate(urls, start=1):
-            print(index)
             await self._open_product_page(url)
             await self._add_product_to_cart()
             await self._wait_for_added_to_cart_dialog_to_finish_loading()
