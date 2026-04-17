@@ -25,10 +25,10 @@ jobs:
 
     # Build the .env file from GitHub variables and secrets
     - name: Create env file
-        uses: SpicyPinto/action-dotenv@v1
-        with:
-          env-file: .env.${{ env.TARGET_ENV }}
-          BASE_URL: ${{ vars.BASE_URL }}
+      uses: SpicyPinto/action-dotenv@v1
+      with:
+        env-file: .env.${{ env.TARGET_ENV }}
+        BASE_URL: ${{ vars.BASE_URL }}
 
     # Get the Python version from the '.python-version' file
     - name: Set up Python
