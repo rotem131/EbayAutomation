@@ -13,6 +13,9 @@ class CartPage(BasePage):
         self._total_items_price = self.page.locator(self._TOTAL_ITEMS_PRICE)
 
     async def assert_cart_total_not_exceeds(self, budget_per_item: float, items_count: int) -> None:
+        if items_count == 0:
+            return None
+
         await self._open_cart()
         await self.screenshot(
                 category="cart",

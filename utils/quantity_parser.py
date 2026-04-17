@@ -10,4 +10,4 @@ def get_number_quantity(text: str) -> int | None:
     if clean_text.startswith("last one"):
         return 1
 
-    return
+    return None

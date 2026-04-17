@@ -19,8 +19,8 @@ class ProductPage(BasePage):
         super().__init__(page, run_id)
         self._add_product_to_cart_area = self.page.get_by_test_id(self._ADD_TO_CART_AREA)
         self._add_product_to_cart_btn = self._add_product_to_cart_area.get_by_test_id(self._ADD_TO_CART_BTN)
-        self.added_to_cart_dialog = self._add_product_to_cart_area.get_by_test_id(self._ADDED_TO_CART_DIALOG)
-        self.added_to_cart_dialog_info = self.added_to_cart_dialog.get_by_test_id(self._ADDED_TO_CART_DIALOG_INFO)
+        self._added_to_cart_dialog = self._add_product_to_cart_area.get_by_test_id(self._ADDED_TO_CART_DIALOG)
+        self._added_to_cart_dialog_info = self._added_to_cart_dialog.get_by_test_id(self._ADDED_TO_CART_DIALOG_INFO)
         self._quantity_input = self.page.locator(self._QUANTITY_INPUT)
         self._quantity_availability = self.page.locator(self._QUANTITY_AVAILABILITY)
         self._variants_blocks = self.page.locator(self._VARIANT_BLOCKS)
@@ -53,7 +53,7 @@ class ProductPage(BasePage):
 
     async def _fill_select_if_needed(self, select_block: Locator) -> None:
         if not await select_block.is_visible():
-            return
+            return None
 
         await self._select_random_option_from_listbox(select_block)
 
@@ -63,13 +63,13 @@ class ProductPage(BasePage):
 
         options = select_block.get_by_role("option")
         if await options.count() == 0:
-            return
+            return None
 
         await self.wait_for_element(options.first, timeout=8000)
         valid_options = await self._get_valid_options(options)
 
         if not valid_options:
-            return
+            return None
 
         selected_option = random.choice(valid_options)
         await self.click_element(selected_option, timeout=8000)
@@ -109,12 +109,12 @@ class ProductPage(BasePage):
                 availability_number = get_number_quantity(text)
 
                 if not availability_number:
-                    return
+                    return None
 
                 random_quantity = random.randint(1, availability_number)
-                await super().fill_field(self._quantity_input, str(random_quantity))
+                await self.fill_field(self._quantity_input, str(random_quantity))
 
     async def _wait_for_added_to_cart_dialog_to_finish_loading(self) -> None:
-        await self.wait_for_element(self.added_to_cart_dialog)
-        await self.wait_for_element(self.added_to_cart_dialog_info)
+        await self.wait_for_element(self._added_to_cart_dialog)
+        await self.wait_for_element(self._added_to_cart_dialog_info)
 

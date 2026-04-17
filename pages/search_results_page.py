@@ -4,18 +4,22 @@ from utils.price_parser import extract_prices
 
 class SearchResultsPage(BasePage): 
     _RESULTS_CONTAINER = "#srp-river-results"
-    _CARD_RESULTS = "#srp-river-results li.s-card"
+    _CARD_RESULTS = "li.s-card"
     _ALL_PRICES_RESULT = "xpath=.//span[contains(@class, 's-card__price')]"
     _ALL_URL_RESULT = "a.s-card__link"
 
     def __init__(self, page: Page, run_id:str) -> None:
         super().__init__(page, run_id)
         self._results_container = self.page.locator(self._RESULTS_CONTAINER)
-        self._results = self.page.locator(self._CARD_RESULTS)
+        self._results = self._results_container.locator(self._CARD_RESULTS)
 
     async def wait_for_results(self) -> None:
         await self.wait_for_element(self._results_container)
-        await self.wait_for_element(self._results.first)
+        if await self.get_results_count() > 0:
+            await self.wait_for_element(self._results.first)
+
+    async def get_results_count(self) -> int:
+        return await self._results.count()
 
     async def _get_prices_from_result(self, result: Locator) -> list[float]:
         price_texts = await result.locator(self._ALL_PRICES_RESULT).all_inner_texts()
@@ -31,7 +35,7 @@ class SearchResultsPage(BasePage):
     async def get_result_urls_under_price_from_current_page(self, max_price: float, limit: int) -> list[str]:
         urls: list[str] = []
 
-        count = await self._results.count()
+        count = await self.get_results_count()
         for i in range(count):
             if len(urls) >= limit:
                 break

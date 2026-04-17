@@ -36,10 +36,10 @@ class SearchPage(BasePage):
         current_page = int(await self.get_inner_text(self._current_page_results_btn))
         await self.click_element(self._pagination_next_btn)
 
-        results_page = SearchResultsPage(self.page)
+        results_page = SearchResultsPage(self.page, self.run_id)
         await results_page.wait_for_results()
 
-        next_page = int(await self.get_inner_text(self._current_page_results_btn()))
+        next_page = int(await self.get_inner_text(self._current_page_results_btn))
         return next_page == current_page + 1
 
     async def search_items_by_name_under_price(self, query: str, max_price: float, limit: int = 5) -> list[str]:
@@ -53,6 +53,9 @@ class SearchPage(BasePage):
         await filter_page.open_dialog_filters()
         await filter_page.add_max_price_filter(max_price)
         await results_page.wait_for_results()
+
+        if await results_page.get_results_count() == 0:
+            return []
 
         while len(urls) < limit:
             current_page_urls = await results_page.get_result_urls_under_price_from_current_page(
