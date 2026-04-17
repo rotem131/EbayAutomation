@@ -12,7 +12,7 @@ jobs:
     # Start a fresh Linux virtual machine (Ubuntu) to run the code
     runs-on: ubuntu-latest
 
-    # Connect to GitHub Environments to access variables and secrets
+    # Connect to GitHub Environments to access variables and secrets 
     environment: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
     
     env:
