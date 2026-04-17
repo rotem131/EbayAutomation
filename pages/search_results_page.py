@@ -8,8 +8,8 @@ class SearchResultsPage(BasePage):
     _ALL_PRICES_RESULT = "xpath=.//span[contains(@class, 's-card__price')]"
     _ALL_URL_RESULT = "a.s-card__link"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page, run_id:str) -> None:
+        super().__init__(page, run_id)
         self._results_container = self.page.locator(self._RESULTS_CONTAINER)
         self._results = self.page.locator(self._CARD_RESULTS)
 

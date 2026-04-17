@@ -7,8 +7,8 @@ class FilterPage(BasePage):
     _MAX_PRICE_INPUT = ".x-refine__price input[aria-label*='Maximum']" 
     _APPLY_DIALOG_BTN = ".x-overlay-footer__apply button"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page, run_id:str) -> None:
+        super().__init__(page, run_id)
         self._dialog_container = self.page.locator(self._DIALOG_FILTER)
         self._max_price_input = self._dialog_container.locator(self._MAX_PRICE_INPUT)
         self._apply_dialog_btn = self._dialog_container.locator(self._APPLY_DIALOG_BTN)

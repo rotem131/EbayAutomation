@@ -7,8 +7,8 @@ class CartPage(BasePage):
     _CART_BTN = f'a[href="{CART_URL}"]'
     _TOTAL_ITEMS_PRICE = "[data-test-id='ITEM_TOTAL']"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page, run_id:str) -> None:
+        super().__init__(page, run_id)
         self._cart_btn = self.page.locator(self._CART_BTN)
         self._total_items_price = self.page.locator(self._TOTAL_ITEMS_PRICE)
 
