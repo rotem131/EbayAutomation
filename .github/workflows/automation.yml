@@ -16,7 +16,7 @@ jobs:
     environment: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
 
     env:
-      TARGET_ENV: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
+      ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
 
     steps:
     # Copy your code from GitHub to the virtual machine
@@ -26,7 +26,7 @@ jobs:
     # Build the .env file from GitHub variables and secrets
     - name: Create env file
       run: |
-        echo "BASE_URL=${{ vars.BASE_URL }}" > .env.${{ env.TARGET_ENV }}
+        echo "BASE_URL=${{ vars.BASE_URL }}" > .env.${{ env.ENVIRONMENT }}
 
     # Get the Python version from the '.python-version' file
     - name: Set up Python
