@@ -14,7 +14,7 @@ jobs:
 
     # Connect to GitHub Environments to access variables and secrets 
     environment: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
-    
+
     env:
       TARGET_ENV: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
 
