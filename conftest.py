@@ -6,6 +6,9 @@ from pages.login_page import LoginPage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
+from config.env_config import load_env
+
+load_env()
 
 @pytest.fixture(scope="session")
 def login_data() -> dict:

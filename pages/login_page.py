@@ -1,6 +1,7 @@
 import logging
 from playwright.async_api import Page, TimeoutError as PlaywrightTimeoutError
 from pages.base_page import BasePage
+from config.env_config import get_base_url
 
 logger = logging.getLogger("pages.login_page")
 
@@ -24,8 +25,7 @@ class LoginPage(BasePage):
         sign_in_page = self._identity_area.get_by_text("Sign in")
         await self.click_element(sign_in_page)
 
-    async def login(self, base_url: str, username: str, password: str) -> None:
-        await self.navigate_to(base_url)
+    async def login(self, username: str, password: str) -> None:
         await self.open_sign_in()
 
         try:
@@ -35,4 +35,4 @@ class LoginPage(BasePage):
             await self.click_element(self._sign_in_btn)
         except PlaywrightTimeoutError:
             logger.warning("Login failed or Captcha appeared, continue as a guest")
-            await self.navigate_to(base_url)
+            await self.navigate_to(get_base_url())
