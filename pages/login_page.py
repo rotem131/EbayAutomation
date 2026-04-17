@@ -12,8 +12,8 @@ class LoginPage(BasePage):
     _PASS_INPUT = "pass"
     _SIGN_IN_BTN = "sgnBt"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page, run_id:str) -> None:
+        super().__init__(page, run_id)
         self._identity_area = self.page.locator(self._IDENTITY_AREA)
         self._user_name_input = self.page.get_by_test_id(self._USER_NAME_INPUT)
         self._continue_btn = self.page.get_by_test_id(self._CONTINUE_BTN)

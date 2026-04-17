@@ -10,8 +10,8 @@ class SearchPage(BasePage):
     _PAGINATION_ITEM_NEXT = "a.pagination__next"
     _PAGINATION_ITEM_CURRENT = "a.pagination__item[aria-current='page']"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page, run_id:str) -> None:
+        super().__init__(page, run_id)
         self._search_input = self.page.locator(self._SEARCH_INPUT)
         self._search_btn = self.page.locator(self._SEARCH_BTN)
         self._pagination_next_btn = self.page.locator(self._PAGINATION_ITEM_NEXT)
@@ -44,8 +44,8 @@ class SearchPage(BasePage):
 
     async def search_items_by_name_under_price(self, query: str, max_price: float, limit: int = 5) -> list[str]:
         urls: list[str] = []
-        filter_page = FilterPage(self.page)
-        results_page = SearchResultsPage(self.page)
+        filter_page = FilterPage(self.page, self.run_id)
+        results_page = SearchResultsPage(self.page, self.run_id)
 
         await self._search(query)
         await results_page.wait_for_results()

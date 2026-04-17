@@ -15,8 +15,8 @@ class ProductPage(BasePage):
     _VARIANT_BLOCKS = "div.vim.x-sku"
     _VARIANTS_DROPDOWNS_BTN = "button.listbox-button__control"
 
-    def __init__(self, page: Page) -> None:
-        super().__init__(page)
+    def __init__(self, page: Page,  run_id:str) -> None:
+        super().__init__(page, run_id)
         self._add_product_to_cart_area = self.page.get_by_test_id(self._ADD_TO_CART_AREA)
         self._add_product_to_cart_btn = self._add_product_to_cart_area.get_by_test_id(self._ADD_TO_CART_BTN)
         self.added_to_cart_dialog = self._add_product_to_cart_area.get_by_test_id(self._ADDED_TO_CART_DIALOG)

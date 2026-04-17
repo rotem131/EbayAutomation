@@ -3,9 +3,10 @@ import re
 from pathlib import Path
 
 class BasePage:
-    def __init__(self, page: Page):
+    def __init__(self, page: Page, run_id:str):
         self.page = page
         self.default_timeout = 10000
+        self.run_id = run_id or "default_run"
 
     async def navigate_to(self, url: str) -> None:
         await self.page.goto(url)
@@ -30,7 +31,7 @@ class BasePage:
         return (await element.inner_text()).strip()
     
     async def screenshot( self, category: str, file_name: str, full_page: bool = False) -> None:
-        folder_path = Path("screenshots") / category
+        folder_path = Path("screenshots") / self.run_id / category
         folder_path.mkdir(parents=True, exist_ok=True)
 
         file_path = folder_path / file_name
