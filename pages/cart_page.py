@@ -26,5 +26,4 @@ class CartPage(BasePage):
 
     async def _open_cart(self) -> None:
         await self.click_element(self._cart_btn)
-        await self.page.wait_for_timeout(15000)
         await self.page.wait_for_url(CART_URL, timeout=15000)
