@@ -12,11 +12,11 @@ jobs:
     # Start a fresh Linux virtual machine (Ubuntu) to run the code
     runs-on: ubuntu-latest
 
+    # Connect to GitHub Environments to access variables and secrets 
+    environment: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
+
     env:
-      TARGET_ENV: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
-    
-    # Connect to GitHub Environments to access variables and secrets
-    environment: ${{ env.TARGET_ENV }} 
+      ENVIRONMENT: ${{ github.ref_name == 'main' && 'prod' || 'prod' }}
 
     steps:
     # Copy your code from GitHub to the virtual machine
@@ -25,10 +25,8 @@ jobs:
 
     # Build the .env file from GitHub variables and secrets
     - name: Create env file
-        uses: SpicyPinto/action-dotenv@v1
-        with:
-          env-file: .env.${{ env.TARGET_ENV }}
-          BASE_URL: ${{ vars.BASE_URL }}
+      run: |
+        echo "BASE_URL=${{ vars.BASE_URL }}" > .env.${{ env.ENVIRONMENT }}
 
     # Get the Python version from the '.python-version' file
     - name: Set up Python
