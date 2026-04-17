@@ -58,6 +58,7 @@ which separates test logic from page interactions.
 ## Assumptions
 - Prices are handled in Israeli currency (ILS)
 - A price filter is available on the website
+- The automation assumes that all filtered products are valid for purchase; products that cannot be added to the cart will cause the test to fail
 
 ## Limitations
 - Duplicate results are not handled
