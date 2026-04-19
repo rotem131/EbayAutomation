@@ -10,7 +10,8 @@ from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
 from config.env_config import load_env
-
+import logging
+logger = logging.getLogger("pages.conftest")
 load_env()
 
 @pytest.hookimpl(hookwrapper=True)
@@ -25,6 +26,8 @@ def pytest_runtest_teardown(item, nextitem):
 
             if test_artifacts_dir.is_dir():
                 for file in test_artifacts_dir.iterdir():
+                    logger.info(f"Found file: {file}")
+                    
                     if file.is_file() and file.suffix.lower() == ".png":
                         allure.attach.file(
                             str(file),
