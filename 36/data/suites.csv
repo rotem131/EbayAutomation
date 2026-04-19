@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","182995","test_search_and_buy_under_budget[chromium-shoes-220-5]","tests","Sun Apr 19 13:16:06 UTC 2026","broken","Sun Apr 19 13:19:09 UTC 2026","","test_search","",""
