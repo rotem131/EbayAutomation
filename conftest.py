@@ -28,18 +28,18 @@ def pytest_runtest_teardown(item, nextitem):
 
             if test_artifacts_dir.is_dir():
                 for file in test_artifacts_dir.iterdir():
-                    if file.is_file() and SCREENSHOT_NAME_PATTERN.match(file.name):
+                    if file.is_file() and file.suffix.lower() == ".png":
                         allure.attach.file(
                             str(file),
                             name="Failure Screenshot",
                             attachment_type=allure.attachment_type.PNG,
                         )
-                    elif TRACE_FILE_PATTERN.match(file.name):
-                            allure.attach.file(
-                                str(file),
-                                name="Playwright Trace",
-                                attachment_type=allure.attachment_type.ZIP,
-                            )
+                    elif file.is_file() and file.suffix.lower() == ".zip":
+                        allure.attach.file(
+                            str(file),
+                            name="Playwright Trace",
+                            attachment_type=allure.attachment_type.ZIP,
+                        )
 
     except Exception as e:
         print(f"Error attaching screenshot: {e}")
