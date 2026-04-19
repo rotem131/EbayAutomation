@@ -13,9 +13,6 @@ from config.env_config import load_env
 
 load_env()
 
-SCREENSHOT_NAME_PATTERN = re.compile(r"^test-failed-\d+\.png$")
-TRACE_FILE_PATTERN = re.compile(r".*trace.*\.zip$")
-
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_teardown(item, nextitem):
     yield
