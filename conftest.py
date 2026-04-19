@@ -23,11 +23,9 @@ def pytest_runtest_teardown(item, nextitem):
     test_artifacts_path = item.funcargs.get("output_path")
     
     if test_artifacts_path:
-        test_artifacts_dir = Path(test_artifacts_path).resolve()
+        test_artifacts_dir = Path(test_artifacts_path)
 
         if test_artifacts_dir.is_dir():
-            time.sleep(1) 
-
             for file in test_artifacts_dir.glob("*.zip"):
                 try:
                     allure.attach.file(
@@ -37,16 +35,6 @@ def pytest_runtest_teardown(item, nextitem):
                     )
                 except Exception as e:
                     logger.error(f"Failed to attach trace: {e}")
-            
-            for file in test_artifacts_dir.glob("*.png"):
-                try:
-                    allure.attach.file(
-                        str(file),
-                        name=f"Failure_{file.name}",
-                        attachment_type=allure.attachment_type.PNG,
-                    )
-                except Exception as e:
-                    logger.error(f"Failed to attach {file}: {e}")
 
 @pytest.fixture(scope="session")
 def login_data() -> dict:
