@@ -1,6 +1,7 @@
 import pytest
 import allure
-import re
+import logging
+import time
 from pathlib import Path
 from datetime import datetime
 from playwright.async_api import Page
@@ -10,8 +11,9 @@ from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
 from config.env_config import load_env
-import logging
-logger = logging.getLogger("pages.conftest")
+
+logger = logging.getLogger("conftest")
+
 load_env()
 
 @pytest.hookimpl(hookwrapper=True)
@@ -25,9 +27,8 @@ def pytest_runtest_teardown(item, nextitem):
             test_artifacts_dir = Path(test_artifacts_path)
 
             if test_artifacts_dir.is_dir():
+                time.sleep(0.5)
                 for file in test_artifacts_dir.iterdir():
-                    logger.info(f"Found file: {file}")
-                    
                     if file.is_file() and file.suffix.lower() == ".png":
                         allure.attach.file(
                             str(file),
@@ -40,9 +41,8 @@ def pytest_runtest_teardown(item, nextitem):
                             name="Playwright Trace",
                             attachment_type=allure.attachment_type.ZIP,
                         )
-
     except Exception as e:
-        print(f"Error attaching screenshot: {e}")
+        logger.error(f"Error attaching: {e}")
 
 @pytest.fixture(scope="session")
 def login_data() -> dict:
