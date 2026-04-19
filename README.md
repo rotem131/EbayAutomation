@@ -8,7 +8,7 @@ Follow these steps to set up and run the project on your machine.
 Before running the project, make sure the following are installed:
 - Python 3.10 or higher
 - pip
-- Playwright browser binaries
+- Allure CLI (optional, for viewing reports locally)
 
 Check Python version: (Bash)
 `python --version`
@@ -29,16 +29,19 @@ cd EbayAutomation
 **Run all tests** (PowerShell)
 `$env:ENVIRONMENT="prod"; pytest tests/`
 
+**View Allure report locally** (Bash)
+`allure serve allure-results`
+
 #### Configuration & Reporting
 The project uses **pytest.ini** for default configurations:
 - **Logging:** You can view logs while the test is running, displaying logs starting at the info level.
-- **HTML Report:** A report named `report-local.html` is automatically generated after each run
+- **Allure Report:** Test results are saved in `allure-results/` and can be viewed using Allure locally or via CI
 
 **Customization:**
 All default configurations can be overridden via the command line.
 For example:
-- Change report name: (Powershell)
-`$env:ENVIRONMENT="prod"; pytest tests/ --html=new-report.html`
+- Override Allure results directory: (PowerShell)  
+`$env:ENVIRONMENT="prod"; pytest tests/ --alluredir=my-results`
 
 ## Project Architecture
 The project is built using the **Page Object Model (POM)** design pattern,
