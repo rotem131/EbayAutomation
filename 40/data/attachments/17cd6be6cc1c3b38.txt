@@ -1,0 +1,1 @@
+INFO     pages.conftest:conftest.py:29 Found file: /home/runner/work/EbayAutomation/EbayAutomation/test-results/tests-test-search-py-test-search-and-buy-under-budget-chromium-shoes-220-5/trace.zip
