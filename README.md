@@ -19,6 +19,12 @@ Check Python version: (Bash)
 git clone https://github.com/rotem131/EbayAutomation.git
 cd EbayAutomation
 ```
+- **Create virtual environment** (Bash) 
+`python -m venv venv`
+
+- **Activate the environment** (Bash) 
+`venv\Scripts\activate`
+
 - **Install dependencies:** (Bash)
 `pip install -r requirements.txt`
 
