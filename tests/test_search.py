@@ -10,10 +10,8 @@ def get_parametrized_data():
     ]
 
 @pytest.mark.parametrize("search_value, max_price, limit", get_parametrized_data())
-@pytest.mark.asyncio(loop_scope="session")
+@pytest.mark.asyncio
 async def test_search_and_buy_under_budget(search_page, product_page, cart_page, search_value, max_price, limit) -> None:
-    await search_page.navigate_to(get_base_url())
-
     urls = await search_page.search_items_by_name_under_price(
         search_value,
         max_price,
