@@ -1,5 +1,6 @@
 import re
 
+
 def get_number_quantity(text: str) -> int | None:
     clean_text = " ".join(text.split()).lower()
 

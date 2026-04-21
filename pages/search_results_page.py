@@ -1,14 +1,15 @@
-from playwright.async_api import Page, Locator 
-from pages.base_page import BasePage 
+from playwright.async_api import Page, Locator
+from pages.base_page import BasePage
 from utils.price_parser import extract_prices
 
-class SearchResultsPage(BasePage): 
+
+class SearchResultsPage(BasePage):
     _RESULTS_CONTAINER = "#srp-river-results"
     _CARD_RESULTS = "li.s-card"
     _ALL_PRICES_RESULT = "xpath=.//span[contains(@class, 's-card__price')]"
     _ALL_URL_RESULT = "a.s-card__link"
 
-    def __init__(self, page: Page, run_id:str) -> None:
+    def __init__(self, page: Page, run_id: str) -> None:
         super().__init__(page, run_id)
         self._results_container = self.page.locator(self._RESULTS_CONTAINER)
         self._results = self._results_container.locator(self._CARD_RESULTS)
@@ -32,7 +33,9 @@ class SearchResultsPage(BasePage):
     async def _get_url_from_result(self, result: Locator) -> str | None:
         return await result.locator(self._ALL_URL_RESULT).first.get_attribute("href")
 
-    async def get_result_urls_under_price_from_current_page(self, max_price: float, limit: int) -> list[str]:
+    async def get_result_urls_under_price_from_current_page(
+        self, max_price: float, limit: int
+    ) -> list[str]:
         urls: list[str] = []
 
         count = await self.get_results_count()

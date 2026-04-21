@@ -1,16 +1,15 @@
+from datetime import datetime
+from pathlib import Path
+import logging
 import pytest
 import allure
-import logging
-import time
 import pytest_asyncio
-from pathlib import Path
-from datetime import datetime
 from playwright.async_api import Page
-from utils.test_data_provider import get_data
 from pages.base_page import BasePage
 from pages.search_page import SearchPage
 from pages.product_page import ProductPage
 from pages.cart_page import CartPage
+from utils.test_data_provider import get_data
 from config.env_config import load_env
 from config.env_config import get_base_url
 
@@ -37,7 +36,7 @@ def pytest_runtest_teardown(item, nextitem):
                         attachment_type=allure.attachment_type.ZIP,
                     )
                 except Exception as e:
-                    logger.error(f"Failed to attach trace: {e}")
+                    logger.error("Failed to attach trace: %s", e)
 
 
 @pytest_asyncio.fixture(scope="function", loop_scope="session")
@@ -61,9 +60,11 @@ async def product_page(ebay_page: Page, run_id: str) -> ProductPage:
 async def cart_page(ebay_page: Page, run_id: str) -> CartPage:
     return CartPage(ebay_page, run_id)
 
+
 @pytest.fixture(scope="session")
 def login_data() -> dict:
     return get_data("data", "login.json")
+
 
 @pytest.fixture(scope="session")
 def run_id() -> str:
