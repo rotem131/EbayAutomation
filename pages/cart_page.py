@@ -1,5 +1,5 @@
-from pages.base_page import BasePage
 from playwright.async_api import Page
+from pages.base_page import BasePage
 from constants.urls import CART_URL
 from utils.price_parser import extract_price
 

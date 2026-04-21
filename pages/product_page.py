@@ -15,12 +15,20 @@ class ProductPage(BasePage):
     _VARIANT_BLOCKS = "div.vim.x-sku"
     _VARIANTS_DROPDOWNS_BTN = "button.listbox-button__control"
 
-    def __init__(self, page: Page,  run_id:str) -> None:
+    def __init__(self, page: Page, run_id: str) -> None:
         super().__init__(page, run_id)
-        self._add_product_to_cart_area = self.page.get_by_test_id(self._ADD_TO_CART_AREA)
-        self._add_product_to_cart_btn = self._add_product_to_cart_area.get_by_test_id(self._ADD_TO_CART_BTN)
-        self._added_to_cart_dialog = self._add_product_to_cart_area.get_by_test_id(self._ADDED_TO_CART_DIALOG)
-        self._added_to_cart_dialog_info = self._added_to_cart_dialog.get_by_test_id(self._ADDED_TO_CART_DIALOG_INFO)
+        self._add_product_to_cart_area = self.page.get_by_test_id(
+            self._ADD_TO_CART_AREA
+        )
+        self._add_product_to_cart_btn = self._add_product_to_cart_area.get_by_test_id(
+            self._ADD_TO_CART_BTN
+        )
+        self._added_to_cart_dialog = self._add_product_to_cart_area.get_by_test_id(
+            self._ADDED_TO_CART_DIALOG
+        )
+        self._added_to_cart_dialog_info = self._added_to_cart_dialog.get_by_test_id(
+            self._ADDED_TO_CART_DIALOG_INFO
+        )
         self._quantity_input = self.page.locator(self._QUANTITY_INPUT)
         self._quantity_availability = self.page.locator(self._QUANTITY_AVAILABILITY)
         self._variants_blocks = self.page.locator(self._VARIANT_BLOCKS)
@@ -30,9 +38,7 @@ class ProductPage(BasePage):
             await self._open_product_page(url)
             await self._add_product_to_cart()
             await self._wait_for_added_to_cart_dialog_to_finish_loading()
-            await self.screenshot(
-                category="products",
-                file_name=f"product_{index}.png")
+            await self.screenshot(category="products", file_name=f"product_{index}.png")
             await self.go_back(wait_for_url=SEARCH_RESULTS_URL_PATTERN)
 
     async def _open_product_page(self, url_product: str) -> None:
@@ -73,7 +79,6 @@ class ProductPage(BasePage):
 
         selected_option = random.choice(valid_options)
         await self.click_element(selected_option, timeout=8000)
-
 
     async def _get_valid_options(self, options_list: Locator) -> list[Locator]:
         valid_options: list[Locator] = []
@@ -117,4 +122,3 @@ class ProductPage(BasePage):
     async def _wait_for_added_to_cart_dialog_to_finish_loading(self) -> None:
         await self.wait_for_element(self._added_to_cart_dialog)
         await self.wait_for_element(self._added_to_cart_dialog_info)
-
